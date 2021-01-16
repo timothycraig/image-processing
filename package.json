@@ -1,0 +1,22 @@
+{
+  "name": "image-processing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timothycraig/image-processing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timothycraig/image-processing/issues"
+  },
+  "homepage": "https://github.com/timothycraig/image-processing#readme",
+  "dependencies": {
+    "sharp": "^0.27.0"
+  }
+}
