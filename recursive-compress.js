@@ -50,6 +50,10 @@ getAllImageFilesInDirectory(sourceDirectory, imageFiles);
 
 if (!fs.existsSync(outputDirectory)) {
   fs.mkdirSync(outputDirectory, { recursive: true });
+} else {
+  fs.rmdirSync(outputDirectory, { recursive: true })
+
+  fs.mkdirSync(outputDirectory, { recursive: true });
 }
 
 imageFiles.forEach(async (fileInfo) => {
