@@ -19,7 +19,7 @@ function getAllImageFilesInDirectory(dirPath, fileArray, relativePath = '') {
 }
 
 function isImageFile(filePath) {
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
   const ext = path.extname(filePath).toLowerCase();
   return imageExtensions.includes(ext);
 }
@@ -27,14 +27,28 @@ function isImageFile(filePath) {
 async function compressImage(fileInfo, outputDir) {
   const { filePath, relativeFilePath } = fileInfo;
   const outputPath = path.join(outputDir, relativeFilePath);
+  const ext = path.extname(filePath).toLowerCase();
 
   // Ensure the output directory exists before writing the file
   await fs.promises.mkdir(path.dirname(outputPath), { recursive: true });
 
   try {
-    await sharp(filePath)
-      .jpeg({ quality: 80 })
-      .toFile(outputPath);
+    switch (ext) {
+      case '.png':
+        await sharp(filePath)
+          .png()
+          .toFile(outputPath);
+          break;
+      case '.jpeg':
+      case '.jpg':
+        await sharp(filePath)
+          .jpeg()
+          .toFile(outputPath);
+        break;
+      default:
+        await fs.promises.cp(filePath, outputPath);
+        break;
+    }
 
     console.log(`Compressed: ${filePath} to ${outputPath}`);
   } catch (error) {
