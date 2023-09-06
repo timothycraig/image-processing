@@ -41,10 +41,8 @@ function isImageFile(filePath) {
   return imageExtensions.includes(ext)
 }
 
-function isCompWorthIt(oldSize, newSize) {
-  const percentChange = Number((((oldSize - newSize) / oldSize) * 100).toFixed(1))
-
-  return percentChange > 30
+function returnPercentChange(oldSize, newSize) {
+  return Number((((oldSize - newSize) / oldSize) * 100).toFixed(1))
 }
 
 async function compressImage(fileInfo, outputDir) {
@@ -85,14 +83,14 @@ async function compressImage(fileInfo, outputDir) {
         processedStats = await fs.promises.stat(outputPath)
         processedMeta = await sharp(outputPath).metadata()
 
-        if (!isCompWorthIt(origStats.size, processedStats.size)) {
+        if (returnPercentChange(origStats.size, processedStats.size) > 30) {
+          console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(processedStats.size)}, (${returnPercentChange(origStats.size, processedStats.size)}%) [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
+        } else {
           await fs.promises.cp(filePath, outputPath)
 
           console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(origStats.size, true)} [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
 
           wasCompressed = false
-        } else {
-          console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(processedStats.size)} [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
         }
 
         return [wasCompressed ? 1 : 0, wasResized ? 1 : 0]
@@ -118,14 +116,14 @@ async function compressImage(fileInfo, outputDir) {
         processedStats = await fs.promises.stat(outputPath)
         processedMeta = await sharp(outputPath).metadata()
 
-        if (!isCompWorthIt(origStats.size, processedStats.size)) {
+        if (returnPercentChange(origStats.size, processedStats.size) > 30) {
+          console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(processedStats.size)}, (${returnPercentChange(origStats.size, processedStats.size)}%) [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
+        } else {
           await fs.promises.cp(filePath, outputPath)
 
           console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(origStats.size, true)} [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
 
           wasCompressed = false
-        } else {
-          console.log(`${displayFileSize(origStats.size)} -> ${displayFileSize(processedStats.size)} [${path.basename(outputPath)}] (${processedMeta.width} X ${processedMeta.height})`)
         }
 
         return [wasCompressed ? 1 : 0, wasResized ? 1 : 0]
