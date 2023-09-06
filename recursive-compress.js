@@ -138,7 +138,7 @@ async function compressImage(fileInfo, outputDir) {
   }
 }
 
-const sourceDirectory = path.resolve(__dirname, 'img')
+const sourceDirectory = path.resolve(__dirname, 'unprocessed')
 const outputDirectory = path.resolve(__dirname, 'processed')
 
 if (!fs.existsSync(outputDirectory)) {
