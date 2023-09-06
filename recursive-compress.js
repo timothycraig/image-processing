@@ -65,13 +65,13 @@ async function compressImage(fileInfo, outputDir) {
               width: 1920,
               height: null,
             })
-            .png()
+            .png({ quality: 80 })
             .toFile(outputPath)
 
           wasResized = true
         } else {
           await sharp(filePath)
-            .png()
+            .png({ quality: 80 })
             .toFile(outputPath)
         }
 
@@ -98,13 +98,13 @@ async function compressImage(fileInfo, outputDir) {
               width: 1920,
               height: null,
             })
-            .jpeg()
+            .jpeg({ quality: 80 })
             .toFile(outputPath)
 
           wasResized = true
         } else {
           await sharp(filePath)
-            .jpeg()
+            .jpeg({ quality: 80 })
             .toFile(outputPath)
         }
 
